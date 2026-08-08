@@ -274,13 +274,13 @@ print(res)
 print(type(res))
 lastlayout = [
               [sg.Text('-WHITE-')],
-              [sg.Text('  Predicted Rating:' + str(res[0]))],
-              [sg.Text('  - ACPL: ' + str(output[0]))],
-              [sg.Text('  - Std ACPL: ' + str(output[1]))],
+              [sg.Text('  Predicted Rating:' + str(round(res[0])))],
+              [sg.Text('  - ACPL: ' + str(round(output[0],1)))],
+              [sg.Text('  - Std ACPL: ' + str(round(output[1],1)))],
               [sg.Text('-BLACK-')],
-              [sg.Text('  Predicted Rating: ' + str(res[1]))],
-              [sg.Text('  - ACPL: ' + str(output[2]))],
-              [sg.Text('  - Std ACPL: ' + str(output[3]))],
+              [sg.Text('  Predicted Rating: ' + str(round(res[1])))],
+              [sg.Text('  - ACPL: ' + str(round(output[2],1)))],
+              [sg.Text('  - Std ACPL: ' + str(round(output[3],1)))],
               [sg.Text('Total Moves:' + str(output[4]-1))],
               
               [sg.Cancel()]
