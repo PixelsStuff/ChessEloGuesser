@@ -8,15 +8,12 @@ import statistics
 import re
 import FreeSimpleGUI as sg
 
-#https://pypi.org/project/stockfish/
-#https://python-chess.readthedocs.io/en/latest/
-
-pgnspath = r"C:\Users\coolg\OneDrive\Desktop\Tools\RatingEstimator\Games"
-afterpath = r"C:\Users\coolg\OneDrive\Desktop\Tools\RatingEstimator\ProcessedGames" #ALL PROCESSED GAMES WILL BE MOVED TO THIS PATH
+pgnspath = "PUTPATHHERE" #REPLACE THIS PATH WITH THE PATH TO YOUR FOLDER WITH PGNS
+afterpath = "PUTPATHHERE" #REPLACE THIS PATH WITH PROCESSED GANES FOLDER. ALL PROCESSED GAMES WILL BE MOVED TO THIS PATH.
 
 
-csvpath = r"C:\Users\coolg\OneDrive\Desktop\Tools\RatingEstimator\GamesData.csv"
-stockfishpath = r"C:\Users\coolg\Downloads\SF18\stockfish\stockfish-windows-x86-64-avx2.exe"
+csvpath = "PUTPATHHERE" # REPLACE THIS PATH WITH PATH TO THE CSV FILE
+stockfishpath = "PUTPATHHERE" #STOCKFISH PATH WILL ALSO NEED TO BE DEFINED
 
 eng = Stockfish(path=stockfishpath)
 eng.set_depth(18) 
@@ -63,9 +60,7 @@ def processevals(evalslist): #Missed mates are evaluated as -1000 + min(eval of 
     print()
     plylook = 1
     while len(evalslist) >= plylook+2:
-        #print(len(evalslist),plylook)
-      ###  print('evalbefore',evalslist[plylook+0][1])
-        #print('evalafter',evalslist[plylook+1][1])
+
         if (evalslist[plylook][0] == False) and (evalslist[plylook+1][0] == False):
             n = max(evalslist[plylook+1][1]-evalslist[plylook][1],0)
             bcpl.append(n)
@@ -75,9 +70,8 @@ def processevals(evalslist): #Missed mates are evaluated as -1000 + min(eval of 
             try:
              if evalslist[plylook][1]/abs(evalslist[plylook][1]) == evalslist[plylook+1][1]/abs(evalslist[plylook+1][1]):
                  pass
-                #bcpl.append(0) k
              else:
-                bcpl.append(1400) #Two points extra because you suck if you went from +M1 to -M1
+                bcpl.append(1400) #Two points extra if you went from +M1 to -M1
             except ZeroDivisionError:
                 pass
          #   print(n)
@@ -124,7 +118,7 @@ def processgame(inputpgnfile):
             board.push(move)
         print()
     print(len(evals))
-    if len(evals) < 5: #SKIPS GAMES ONE MOVE OR LESS
+    if len(evals) < 5: #SKIPS GAMES 4 MOVES OR LESS
         pgn.close()
         os.rename(inputpgnfile,os.path.join(afterpath,os.path.basename(inputpgnfile)))
     else:
@@ -143,12 +137,3 @@ def addtodata(pgn,evals,wacpl,wstd,bcpl,bstd,numevals,welo,belo):
 
 for file in os.listdir(pgnspath):
     processgame(os.path.join(pgnspath,file))
-
-#tstprocess = [(False, 48), (False, 28), (False, 30), (False, 35), (False, 59), (False, 56), (False, 54), (False, 60), (False, 56), (False, 55), (False, 52), (False, 43), (False, 48), (False, 31), (False, 90), (False, 33), (False, 80), (False, 73), (False, 90), (False, 57), (False, 107), (False, -19), (False, 82), (False, 15), (False, 14), (False, 13), (False, 127), (False, 86), (False, 169), (False, 151), (False, 155), (False, 166), (False, 195), (False, 176), (False, 281), (False, 257), (False, 267), (False, 250), (False, 279), (False, 280), (False, 283), (False, 263), (False, 261), (False, 93), (False, 110), (False, 36), (False, 14), (False, -169), (False, -173), (False, -153), (False, -125), (False, -190), (False, -123), (False, -201), (False, -214), (False, -219), (False, -199), (False, -226), (False, -170), (False, -248), (False, -249), (False, -240), (False, -210), (False, -253), (False, -258), (False, -248), (False, -255), (False, -257), (False, -228), (False, -340), (False, -270), (False, -260), (False, -250), (False, -257), (False, -264), (False, -287), (False, -218), (False, -255), (False, -217), (False, -218), (False, -211), (False, -414), (False, -42), (False, -338), (False, -377), (False, -460), (False, -476), (False, -484), (False, -475), (False, -482), (False, -484), (False, -477), (False, -472), (False, -466), (False, -475), (False, -490), (False, -369), (False, -427), (False, -74), (False, -98), (False, -94), (False, -53), (False, -41), (False, -167), (False, -149), (False, -202), (False, -215), (False, -249), (False, -260), (False, -337), (False, -387), (False, -416), (False, -333), (False, -388), (False, -309), (False, -404), (False, -440), (False, -450), (False, -491), (False, -491), (False, -273), (False, -235), (False, -236), (False, -617), (False, -684), (False, -727), (False, -720), (False, -740), (False, -770), (False, -762), (False, -804), (False, -813), (False, -873), (False, -970), (False, -994), (True, -8), (True, -7), (True, -2), (True, -1), (True, -1)]
-#print(processevals(tstprocess))
-
-
-
-#df = pd.DataFrame ( {"ACPL":[80,30],"Rating":[800,2300]} ) 
-
-#df.to_csv(csvpath,mode='a',index=False,header=False)
